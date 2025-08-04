@@ -25,18 +25,18 @@ public class StringConceptsDemo {
         String b = new String("Test");
 
         System.out.println("equals vs ==:");
-        System.out.println("a == b: " + (a == b)); // false
-        System.out.println("a.equals(b): " + a.equals(b)); // true
+        System.out.println("a == b: " + (a == b)); 
+        System.out.println("a.equals(b): " + a.equals(b)); 
         System.out.println();
 
-        // Array of strings manipulation
+       
         String[] fruits = {"apple", "banana", "cherry"};
         System.out.println("Original array:");
         for (String fruit : fruits) {
             System.out.println(fruit);
         }
 
-        // Modify array
+  
         fruits[1] = "blueberry";
         System.out.println("\nModified array:");
         for (String fruit : fruits) {
