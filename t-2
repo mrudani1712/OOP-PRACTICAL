@@ -1,0 +1,22 @@
+import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+
+public class ProductReader {
+    public static void main(String[] args) {
+        try {
+            // Step 1: Dynamically load the class
+            Class<?> productClass = Class.forName("Product");
+
+            // Step 2: Instantiate an object
+            Constructor<?> constructor = productClass.getConstructor(String.class, double.class);
+            Object productObj = constructor.newInstance("Laptop", 1200.50);
+
+            // Step 3: Invoke the method dynamically
+            Method showDetailsMethod = productClass.getMethod("showDetails");
+            showDetailsMethod.invoke(productObj);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
