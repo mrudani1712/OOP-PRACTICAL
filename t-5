@@ -1,0 +1,64 @@
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.reflect.Field;
+
+/**
+ * Custom annotation for field validation.
+ * The @Retention(RetentionPolicy.RUNTIME) ensures the annotation is available at runtime for reflection.
+ * The @Target(ElementType.FIELD) restricts this annotation to only be used on fields.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@interface NotEmpty {
+    String message() default "Field cannot be empty.";
+}
+
+/**
+ * A simple Customer class with a field annotated for validation.
+ */
+class Customer {
+    @NotEmpty(message = "Customer name is required.")
+    private String name;
+    private String email;
+
+    public Customer(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+}
+
+/**
+ * The main class that performs validation using reflection.
+ * It dynamically inspects an object, finds the @NotEmpty annotation,
+ * and checks the value of the annotated field.
+ */
+public class Main {
+    public static void validate(Object obj) throws IllegalAccessException {
+        Class<?> clazz = obj.getClass();
+        for (Field field : clazz.getDeclaredFields()) {
+            // Check if the field has the @NotEmpty annotation
+            if (field.isAnnotationPresent(NotEmpty.class)) {
+                field.setAccessible(true); // Allows access to private fields
+                Object value = field.get(obj);
+                
+                // Perform the validation check
+                if (value == null || (value instanceof String && ((String) value).trim().isEmpty())) {
+                    NotEmpty annotation = field.getAnnotation(NotEmpty.class);
+                    System.out.println("Validation Warning: " + annotation.message());
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IllegalAccessException {
+        System.out.println("Validating customer 1 (valid name):");
+        Customer customer1 = new Customer("Alice", "alice@example.com");
+        validate(customer1);
+        
+        System.out.println("\nValidating customer 2 (empty name):");
+        Customer customer2 = new Customer("", "bob@example.com");
+        validate(customer2);
+    }
+}
