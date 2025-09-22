@@ -1,0 +1,17 @@
+public class UserAPI {
+
+    @APIInfo(endpoint = "/users", method = "GET")
+    public void getAllUsers() {
+        // ...
+    }
+
+    @APIInfo(endpoint = "/users/{id}", method = "GET")
+    public void getUserById(long id) {
+        // ...
+    }
+
+    @APIInfo(endpoint = "/users", method = "POST")
+    public void createUser() {
+        // ...
+    }
+}
